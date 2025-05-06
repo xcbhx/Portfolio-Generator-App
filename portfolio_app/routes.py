@@ -2,7 +2,7 @@ import os
 from flask import Blueprint, request, render_template, redirect, url_for, flash
 from datetime import datetime
 from portfolio_app.models import User, Portfolio, Project
-from portfolio_app.forms import PortfolioForm
+from portfolio_app.forms import PortfolioForm, ProjectForm
 
 from portfolio_app import db
 
@@ -45,6 +45,7 @@ def portfolio_detail(portfolio_id):
 
 @main.route("/portfolio/<int:portfolio_id>/edit", methods=["GET", "POST"])
 def edit_portfolio(portfolio_id):
+  """Display form to edit portfolio."""
   portfolio = Portfolio.query.get_or_404(portfolio_id)
   # Pre-fill the form using obj=portfolio
   form = PortfolioForm(obj=portfolio)
@@ -64,9 +65,37 @@ def edit_portfolio(portfolio_id):
   return render_template("edit_portfolio.html", portfolio=portfolio, form=form)
 
 
+@main.route("/portfolio/<int:portfolio_id>/create_project", methods=["GET", "POST"])
+def create_project(portfolio_id):
+  """Displaying form to add projects."""
+  form = ProjectForm()
+
+  if form.validate_on_submit():
+    new_project = Project(
+      portfolio_id=portfolio_id,
+      title=form.title.data,
+      description=form.description.data,
+      github_link=form.github_link.data
+    )
+    db.session.add(new_project)
+    db.session.commit()
+
+    flash("New project was created successfully.")
+    return redirect(url_for("main.project_detail", project_id=new_project.id))
+
+  return render_template("create_project.html", form=form, portfolio_id=portfolio_id)
+
+
 @main.route("/project/<int:project_id>", methods=["GET"])
 def project_detail(project_id):
-  """Show project."""
-  project = Project.query.get(project_id)
+  """Display projects."""
+  project = Project.query.get_or_404(project_id)
   return render_template("project_detail.html", project=project)
+
+
+# @main.route("/project/<int:project_id>/edit_project", methods=["GET"])
+# def edit_project(project_id):
+#   """Display form to edit projects."""
+#   project = Project.query.get(project_id)
+#   return render_template("edit_project.html", project=project)
 
