@@ -10,7 +10,6 @@ class User(db.Model):
   email = db.Column(db.String(80), nullable=False)
   created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-
   created_portfolios = db.relationship("Portfolio", back_populates="user")
 
 class Portfolio(db.Model):

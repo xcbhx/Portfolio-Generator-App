@@ -27,24 +27,23 @@ def create():
         f'{created_at}',
         "%Y-%m-%d %H:%M")
     except ValueError:
-      return render_template("create_porfolio.html",
+      return render_template("create_portfolio.html",
         error="Incorrect datetime format! Please try again.")
     
     new_portfolio = Portfolio(
       bio=new_bio,
       skills=new_skills,
-      projects=new_projects,
-      created_at=created_at
+      projects=new_projects
     )
     db.session.add(new_portfolio)
     db.session.commit()
 
     flash("Portfolio Created.")
-    return redirect(url_for("main.display"))
+    return redirect(url_for("main.portfolio_detail", portfolio_id=new_portfolio.id))
   else:
     return render_template("create_portfolio.html")
 
-@main.route("/portfolio/<portfolio_id>", methods=["GET"])
+@main.route("/portfolio/<int:portfolio_id>", methods=["GET"])
 def portfolio_detail(portfolio_id):
   """Show portfolio."""
   portfolio = Portfolio.query.get(portfolio_id)
@@ -52,7 +51,7 @@ def portfolio_detail(portfolio_id):
 
 
 
-@main.route("/portfolio/<project_id>", methods=["GET"])
+@main.route("/project/<int:project_id>", methods=["GET"])
 def project_detail(project_id):
   """Show project."""
   project = Project.query.get(project_id)
