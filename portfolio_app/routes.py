@@ -46,7 +46,22 @@ def portfolio_detail(portfolio_id):
 @main.route("/portfolio/<int:portfolio_id>/edit", methods=["GET", "POST"])
 def edit_portfolio(portfolio_id):
   portfolio = Portfolio.query.get_or_404(portfolio_id)
-  return f"<h1>Edit page for Portfolio ID: {portfolio.id}</h1>"
+  # Pre-fill the form using obj=portfolio
+  form = PortfolioForm(obj=portfolio)
+
+  if form.validate_on_submit():
+    # Update the porfolio with new form data
+    portfolio.bio = form.bio.data
+    # Dynamically display skill input
+    skills_list = request.form.getlist("skills")
+    portfolio.skills = ", ".join(skills_list)
+
+    db.session.commit()
+
+    flash("Portfolio details updated successfully.")
+    return redirect(url_for("main.portfolio_detail", portfolio_id=portfolio.id))
+
+  return render_template("edit_portfolio.html", portfolio=portfolio, form=form)
 
 
 @main.route("/project/<int:project_id>", methods=["GET"])
