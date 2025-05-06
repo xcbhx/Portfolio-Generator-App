@@ -39,10 +39,14 @@ def create():
 
 @main.route("/portfolio/<int:portfolio_id>", methods=["GET"])
 def portfolio_detail(portfolio_id):
-  """Show portfolio."""
-  portfolio = Portfolio.query.get(portfolio_id)
+  """Display a single portfolio's details."""
+  portfolio = Portfolio.query.get_or_404(portfolio_id)
   return render_template("portfolio_detail.html", portfolio=portfolio)
 
+@main.route("/portfolio/<int:portfolio_id>/edit", methods=["GET", "POST"])
+def edit_portfolio(portfolio_id):
+  portfolio = Portfolio.query.get_or_404(portfolio_id)
+  return f"<h1>Edit page for Portfolio ID: {portfolio.id}</h1>"
 
 
 @main.route("/project/<int:project_id>", methods=["GET"])
