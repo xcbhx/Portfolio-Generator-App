@@ -100,9 +100,22 @@ def project_detail(project_id):
   return render_template("project_detail.html", project=project)
 
 
-# @main.route("/project/<int:project_id>/edit_project", methods=["GET"])
-# def edit_project(project_id):
-#   """Display form to edit projects."""
-#   project = Project.query.get(project_id)
-#   return render_template("edit_project.html", project=project)
+@main.route("/project/<int:project_id>/edit_project", methods=["GET", "POST"])
+def edit_project(project_id):
+  """Display form to edit projects."""
+  project = Project.query.get_or_404(project_id)
+  # Pre-fill the form using obj=project
+  form = ProjectForm(obj=project)
+
+  if form.validate_on_submit():
+    project.title = form.title.data
+    project.description = form.description.data
+    project.github_link = form.github_link.data
+
+    db.session.commit()
+
+    flash("Project updated.")
+    return redirect(url_for("main.project_detail", project_id=project.id))
+  
+  return render_template("edit_project.html", project=project, form=form)
 
