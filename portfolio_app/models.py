@@ -18,7 +18,6 @@ class Portfolio(db.Model):
   user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
   bio = db.Column(db.String, nullable=False)
   skills = db.Column(db.String, nullable=False)
-  projects = db.Column(db.String, nullable=False)
   created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
   user = db.relationship("User", back_populates="created_portfolios")

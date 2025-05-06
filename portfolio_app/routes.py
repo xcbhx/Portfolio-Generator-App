@@ -2,8 +2,9 @@ import os
 from flask import Blueprint, request, render_template, redirect, url_for, flash
 from datetime import datetime
 from portfolio_app.models import User, Portfolio, Project
+from portfolio_app.forms import PortfolioForm
 
-from portfolio_app import app, db
+from portfolio_app import db
 
 main = Blueprint("main", __name__)
 
@@ -16,11 +17,11 @@ def homepage():
 @main.route("/create_portfolio", methods=["GET", "POST"])
 def create():
   """ Create a new porfolio."""
-  if request.method == "POST":
+  form = PortfolioForm()
+
+  if request.method == "POST" and form.validate_on_submit:
     new_bio = request.form.get("bio")
     new_skills = request.form.get("skills")
-    new_projects = request.form.get("projects")
-    created_at = request.form.get("created_at")
 
     try:
       created_at = datetime.strftime(
@@ -32,8 +33,7 @@ def create():
     
     new_portfolio = Portfolio(
       bio=new_bio,
-      skills=new_skills,
-      projects=new_projects
+      skills=new_skills
     )
     db.session.add(new_portfolio)
     db.session.commit()
@@ -41,7 +41,7 @@ def create():
     flash("Portfolio Created.")
     return redirect(url_for("main.portfolio_detail", portfolio_id=new_portfolio.id))
   else:
-    return render_template("create_portfolio.html")
+    return render_template("create_portfolio.html", form=form)
 
 @main.route("/portfolio/<int:portfolio_id>", methods=["GET"])
 def portfolio_detail(portfolio_id):

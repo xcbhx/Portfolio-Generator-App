@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Create Portfolio</h1>
+
+<form method="POST">
+  {{ form.hidden_tag() }}
+  <fieldset>
+    <legend>Please enter your information:</legend>
+    <p>
+      {{ form.bio.label }}
+      {{ form.bio() }}
+      {% for error in form.bio.errors %}
+        <span style="color: red;">{{ error }}</span>
+      {% endfor %}
+    </p>
+
+    <p>
+      {{ form.skills.label }}
+      {{ form.skills() }}
+      {% for error in form.skills.errors %}
+        <span style="color: red;">{{ error }}</span>
+      {% endfor %}
+    </p>
+
+    <p>{{ form.submit }}</p>
+
+  </fieldset>
+</form>
+
+{% endblock %}
