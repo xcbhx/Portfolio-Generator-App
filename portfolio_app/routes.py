@@ -115,7 +115,7 @@ def edit_project(project_id):
     db.session.commit()
 
     flash("Project updated.")
-    return redirect(url_for("main.project_detail", project_id=project.id))
+    return redirect(url_for("main.portfolio_detail", portfolio_id=project.portfolio_id))
   
   return render_template("edit_project.html", project=project, form=form)
 
