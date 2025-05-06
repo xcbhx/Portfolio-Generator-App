@@ -1,27 +1,32 @@
 {% extends "base.html" %}
 
 {% block content %}
+<h1 class="text-2xl font-bold mb-6 text-center">Create Projects</h1>
 
-<h1>Create Projects</h1>
-
-<form method="POST">
+<form method="POST" class="max-w-3xl mx-auto bg-white shadow-md rounded px-8 py-6">
   {{ form.hidden_tag() }}
-  <fieldset>
-    <legend>Please enter in your Projects:</legend>
-    {{ form.title.label }}
-    {{ form.title() }}
+  <fieldset id="project-wrapper" class="space-y-6">
+    <legend class="block text-lg font-semibold text-gray-700">Add Project(s):</legend>
 
-    {{ form.description.label }}
-    {{ form.description() }}
+    <div class="project-group">
+      <label class="block mb-2 font-medium">Project Title</label>
+      <input name="project_title" type="text" class="block w-full p-2 border rounded" placeholder="e.g., Portfolio Generator" />
 
-    {{ form.github_link.label }}
-    {{ form.github_link() }}
+      <label class="block mt-4 mb-2 font-medium">Description</label>
+      <textarea name="project_description" rows="3" class="block w-full p-2 border rounded" placeholder="What does the project do?"></textarea>
 
-    {{ form.submit() }}
-
-
+      <label class="block mt-4 mb-2 font-medium">GitHub Link</label>
+      <input name="project_github" type="url" class="block w-full p-2 border rounded" placeholder="https://github.com/..." />
+    </div>
   </fieldset>
-</form>
 
+  <button type="button" onclick="addProjectField()" class="mt-4 text-blue-600 hover:underline text-sm">
+    + Add another project
+  </button>
+
+  <div class="text-center mt-6">
+    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Submit Projects</button>
+  </div>
+</form>
 
 {% endblock %}
