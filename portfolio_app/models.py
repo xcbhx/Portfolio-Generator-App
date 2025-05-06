@@ -22,8 +22,8 @@ class Portfolio(db.Model):
   projects = db.Column(db.String, nullable=False)
   created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-  user = db.relationship("User", back_populate="created_portfolios")
-  project_list = db.relationship("Project", back_populate="portfolio")
+  user = db.relationship("User", back_populates="created_portfolios")
+  project_list = db.relationship("Project", back_populates="portfolio")
 
 class Project(db.Model):
   __tablename__ = "project"
@@ -34,4 +34,4 @@ class Project(db.Model):
   github_link = db.Column(db.String, nullable=False)
   created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-  portfolio = db.relationship("Portfolio", back_populate="project_list")
+  portfolio = db.relationship("Portfolio", back_populates="project_list")
