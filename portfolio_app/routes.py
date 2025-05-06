@@ -19,22 +19,16 @@ def create():
   """ Create a new porfolio."""
   form = PortfolioForm()
 
-  if request.method == "POST" and form.validate_on_submit:
-    new_bio = request.form.get("bio")
-    new_skills = request.form.get("skills")
+  if  form.validate_on_submit():
+    #  Handles dynamic skills fields from the form
+    skills_list = request.form.getlist("skills")
+    skills_combined = ", ".join(skills_list)
 
-    try:
-      created_at = datetime.strftime(
-        f'{created_at}',
-        "%Y-%m-%d %H:%M")
-    except ValueError:
-      return render_template("create_portfolio.html",
-        error="Incorrect datetime format! Please try again.")
-    
     new_portfolio = Portfolio(
-      bio=new_bio,
-      skills=new_skills
+      bio=form.bio.data,
+      skills=skills_combined
     )
+    
     db.session.add(new_portfolio)
     db.session.commit()
 
