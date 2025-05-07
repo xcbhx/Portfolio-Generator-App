@@ -67,7 +67,9 @@ def edit_portfolio(portfolio_id):
 
 @main.route("/portfolio/<int:portfolio_id>/create_project", methods=["GET", "POST"])
 def create_project(portfolio_id):
-  """Displaying form to add projects."""
+  """Displaying form to add one or more projects to portfolio."""
+  form = ProjectForm()
+
   if request.method == "POST":
     titles = request.form.getlist("project_title")
     descriptions = request.form.getlist("project_description")
@@ -76,20 +78,21 @@ def create_project(portfolio_id):
     if not all(titles) or not all(github_links):
       flash("Each project must include a title and Github link.")
       return redirect(request.url)
+    
     for title, desc, link in zip(titles, descriptions, github_links):
       new_project = Project(
         portfolio_id=portfolio_id,
         title=title,
         description=desc,
         github_link=link
-    )
-    db.session.add(new_project)
+      )
+      db.session.add(new_project)
+
     db.session.commit()
 
     flash("New project was created successfully.")
     return redirect(url_for("main.portfolio_detail", portfolio_id=portfolio_id))
 
-  form = ProjectForm()
   return render_template("create_project.html", form=form)
 
 
