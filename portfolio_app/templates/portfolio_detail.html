@@ -1,51 +1,61 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1 class="text-2xl font-bold mb-4">Portfolio Detail</h1>
+<div class="max-w-4xl mx-auto px-4 py-10">
+  <h1 class="text-3xl font-bold text-gray-800 dark:text-red-800 mb-6">Portfolio Details</h1>
 
-<p class="mb-4">{{ portfolio.bio }}</p>
+  <!-- Bio Section -->
+  <section class="mb-8">
+    <h2 class="text-xl font-semibold text-gray-700 dark:text-red-800 mb-2">Bio</h2>
+    <p class="text-gray-800 dark:text-gray-300 bg-gray-50 dark:bg-gray-800 p-4 rounded shadow">
+      {{ portfolio.bio }}
+    </p>
+  </section>
 
-<div class="mb-4">
-  <h2 class="text-lg font-semibold">Skills:</h2>
-  <ul class="list-disc list-inside">
-    {% for skill in portfolio.skills.split(",") %}
-      <li>{{ skill.strip() }}</li>
-    {% endfor %}
-  </ul>
+  <!-- Skills Section -->
+  <section class="mb-8">
+    <h2 class="text-xl font-semibold text-gray-700 dark:text-red-800 mb-2">Skills</h2>
+    <ul class="list-disc list-inside text-gray-800 dark:text-gray-300 bg-gray-50 dark:bg-gray-800 p-4 rounded shadow">
+      {% for skill in portfolio.skills.split(",") %}
+        <li>{{ skill.strip() }}</li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <!-- Projects Section -->
+  <section>
+    <h2 class="text-xl font-semibold text-gray-700 dark:text-red-800 mb-4">Projects</h2>
+    {% if portfolio.project_list %}
+      <ul class="space-y-6">
+        {% for project in portfolio.project_list %}
+          <li class="border border-gray-200 dark:border-gray-700 rounded-lg p-6 bg-white dark:bg-gray-900 shadow-sm">
+            <h3 class="text-lg font-bold text-gray-900 dark:text-red-800">{{ project.title }}</h3>
+            <p class="mb-2 text-gray-700 dark:text-gray-300">{{ project.description }}</p>
+            <a href="{{ project.github_link }}" target="_blank" class="text-blue-600 hover:underline">
+              View on GitHub
+            </a><br>
+            <a href="{{ url_for('main.edit_projects', portfolio_id=portfolio.id) }}"
+              class="inline-block mt-3 text-white bg-green-600 hover:bg-green-700 font-medium rounded px-4 py-2 text-sm">
+              Edit Projects
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-gray-500">No projects have been added yet.</p>
+    {% endif %}
+  </section>
+
+  <!-- Action Buttons -->
+  <div class="mt-10 flex space-x-4">
+    <a href="{{ url_for('main.edit_portfolio', portfolio_id=portfolio.id) }}"
+      class="inline-block text-white bg-blue-600 hover:bg-blue-700 font-medium rounded px-5 py-2.5">
+      Edit Portfolio
+    </a>
+    <a href="{{ url_for('main.create_project', portfolio_id=portfolio.id) }}"
+      class="inline-block text-white bg-indigo-600 hover:bg-indigo-700 font-medium rounded px-5 py-2.5">
+      Add New Project
+    </a>
+  </div>
 </div>
-
-<h2 class="text-xl font-semibold mt-8 mb-4">Projects</h2>
-{% if portfolio.project_list %}
-<ul class="space-y-4">
-  {% for project in portfolio.project_list %}
-    <li class="border rounded-lg p-4 shadow">
-      <h3 class="text-lg font-bold">{{ project.title }}</h3>
-      <p class="mb-2 text-gray-700">{{ project.description }}</p>
-      <a href="{{ project.github_link }}" target="_blank" class="text-blue-600 hover:underline">
-        View on GitHub
-      </a><br>
-      <a href="{{ url_for('main.edit_projects', portfolio_id=portfolio.id) }}"
-         class="inline-block mt-2 text-white bg-blue-600 hover:bg-blue-700 font-medium rounded px-3 py-1">
-        Edit Project
-      </a>
-    </li>
-  {% endfor %}
-</ul>
-{% else %}
-  <p>No projects have been added yet.</p>
-{% endif %}
-
-<div class="mt-6 space-x-4">
-  <a href="{{ url_for('main.edit_portfolio', portfolio_id=portfolio.id) }}"
-     class="inline-block text-white bg-blue-600 hover:bg-blue-700 font-medium rounded px-4 py-2">
-    Edit Portfolio
-  </a>
-
-  <a href="{{ url_for('main.create_project', portfolio_id=portfolio.id) }}" 
-     class="inline-block text-white bg-blue-600 hover:bg-blue-700 font-medium rounded px-4 py-2">
-    Add New Project
-  </a>
-</div>
-
-
 {% endblock %}
