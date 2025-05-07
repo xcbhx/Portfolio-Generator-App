@@ -100,22 +100,28 @@ def project_detail(project_id):
   return render_template("project_detail.html", project=project)
 
 
-@main.route("/project/<int:project_id>/edit_project", methods=["GET", "POST"])
-def edit_project(project_id):
+@main.route("/portfolio/<int:portfolio_id>/edit_projects", methods=["GET", "POST"])
+def edit_projects(portfolio_id):
   """Display form to edit projects."""
-  project = Project.query.get_or_404(project_id)
-  # Pre-fill the form using obj=project
-  form = ProjectForm(obj=project)
+  portfolio = Portfolio.query.get_or_404(portfolio_id)
+  projects = portfolio.project_list
 
-  if form.validate_on_submit():
-    project.title = form.title.data
-    project.description = form.description.data
-    project.github_link = form.github_link.data
+  if request.method == "POST":
+    titles = request.form.getlist("title")
+    descriptions = request.form.getlist("description")
+    github_links = request.form.getlist("github_link")
+    project_ids = request.form.getlist("project_id")
+
+    for i in range(len(project_ids)):
+      project = Project.query.get(int(project_ids[i]))
+      project.title = titles[i]
+      project.description = descriptions[i]
+      project.github_link = github_links[i]
 
     db.session.commit()
 
-    flash("Project updated.")
-    return redirect(url_for("main.portfolio_detail", portfolio_id=project.portfolio_id))
+    flash("All project updated successfully.")
+    return redirect(url_for("main.portfolio_detail", portfolio_id=portfolio_id))
   
-  return render_template("edit_project.html", project=project, form=form)
+  return render_template("edit_project.html", projects=projects, portfolio=portfolio)
 
