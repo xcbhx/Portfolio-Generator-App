@@ -1,6 +1,9 @@
 from portfolio_app import create_app
+from portfolio_app.extensions import db
 
 app = create_app()
 
 if __name__ == "__main__":
+  with app.app_context():
+    db.create_all()
   app.run(debug=True, port=5001)
