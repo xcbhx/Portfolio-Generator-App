@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2 class="text-2xl font-bold mb-6">Edit All Projects</h2>
+<h2 class="text-2xl font-bold mb-6 pt-5">Edit All Projects</h2>
 <form method="POST" action="{{ url_for('main.edit_projects', portfolio_id=portfolio.id)}}" class="bg-white dark:bg-gray-800 shadow-md rounded px-8 py-6">
   {% for project in projects %}
     <div class="mb-6 p-4 border rounded shadow">
