@@ -134,3 +134,16 @@ def edit_projects(portfolio_id):
   
   return render_template("main/edit_project.html", projects=projects, portfolio=portfolio)
 
+
+@main.route("/project/<int:project_id>/delete", methods=["POST"])
+@login_required
+def delete_projects(project_id):
+  """Delete a project by its ID."""
+  project = Project.query.get_or_404(project_id)
+  portfolio_id = project.portfolio_id  # Save before deletion
+
+  db.session.delete(project)
+  db.session.commit()
+
+  flash("Project deleted successfully.")
+  return redirect(url_for("main.portfolio_detail", portfolio_id=portfolio_id))

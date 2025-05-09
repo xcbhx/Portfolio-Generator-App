@@ -22,7 +22,7 @@ class Portfolio(db.Model):
   created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
   user = db.relationship("User", back_populates="created_portfolios")
-  project_list = db.relationship("Project", back_populates="portfolio")
+  project_list = db.relationship("Project", back_populates="portfolio", cascade="all, delete")
 
 class Project(db.Model):
   __tablename__ = "project"

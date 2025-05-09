@@ -30,7 +30,7 @@ class PortfolioForm(FlaskForm):
       DataRequired(),
       Length(min=3, message="Please enter at least 3 characters for skills.")
     ])
-  submit = SubmitField("Create Portfolio")
+  submit = SubmitField("Save Portfolio")
 
 
 class ProjectForm(FlaskForm):

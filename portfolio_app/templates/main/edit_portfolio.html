@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Edit Portfolio</h2>
+<h2 class="text-3xl font-bold text-gray-800 dark:text-red-800 mb-6 text-center">Edit Portfolio</h2>
 <form method="POST" action="{{ url_for('main.edit_portfolio', portfolio_id=portfolio.id)}}" class="bg-white dark:bg-gray-800 shadow-md rounded px-8 py-6">
   {{ form.hidden_tag() }}
   <fieldset>

@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="max-w-4xl mx-auto px-4 py-10">
-  <h1 class="text-3xl font-bold text-gray-800 dark:text-red-800 mb-6">Portfolio Details</h1>
+  <h1 class="text-3xl font-bold text-gray-800 dark:text-red-800 mb-6 text-center">Portfolio Details</h1>
 
   <!-- Bio Section -->
   <section class="mb-8">
@@ -33,11 +33,20 @@
             <p class="mb-2 text-gray-700 dark:text-gray-300">{{ project.description }}</p>
             <a href="{{ project.github_link }}" target="_blank" class="text-blue-600 hover:underline">
               View on GitHub
-            </a><br>
+            </a>
+            
+            <br />
             <a href="{{ url_for('main.edit_projects', portfolio_id=portfolio.id) }}"
               class="inline-block mt-3 text-white bg-green-600 hover:bg-green-700 font-medium rounded px-4 py-2 text-sm">
               Edit Projects
             </a>
+
+            <!-- Delete Project Form -->
+            <form action="{{ url_for('main.delete_projects', project_id=project.id) }}" method="POST" style="display:inline;">
+              <button type="submit" class="inline-block mt-3 text-white bg-red-600 hover:bg-red-700 font-medium rounded px-4 py-2 text-sm">
+                Delete Project
+              </button>
+            </form>
           </li>
         {% endfor %}
       </ul>
@@ -58,4 +67,6 @@
     </a>
   </div>
 </div>
+
+
 {% endblock %}
