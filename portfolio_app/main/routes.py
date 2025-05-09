@@ -11,7 +11,7 @@ main = Blueprint("main", __name__)
 @main.route("/")
 def homepage():
   """Landing page explaing what the app does."""
-  return render_template("index.html")
+  return render_template("main/index.html")
 
 
 @main.route("/create_portfolio", methods=["GET", "POST"])
@@ -35,13 +35,13 @@ def create():
     flash("Portfolio Created.")
     return redirect(url_for("main.portfolio_detail", portfolio_id=new_portfolio.id))
   else:
-    return render_template("create_portfolio.html", form=form)
+    return render_template("main/create_portfolio.html", form=form)
 
 @main.route("/portfolio/<int:portfolio_id>", methods=["GET"])
 def portfolio_detail(portfolio_id):
   """Display a single portfolio's details."""
   portfolio = Portfolio.query.get_or_404(portfolio_id)
-  return render_template("portfolio_detail.html", portfolio=portfolio)
+  return render_template("main/portfolio_detail.html", portfolio=portfolio)
 
 @main.route("/portfolio/<int:portfolio_id>/edit", methods=["GET", "POST"])
 def edit_portfolio(portfolio_id):
@@ -62,7 +62,7 @@ def edit_portfolio(portfolio_id):
     flash("Portfolio details updated successfully.")
     return redirect(url_for("main.portfolio_detail", portfolio_id=portfolio.id))
 
-  return render_template("edit_portfolio.html", portfolio=portfolio, form=form)
+  return render_template("main/edit_portfolio.html", portfolio=portfolio, form=form)
 
 
 @main.route("/portfolio/<int:portfolio_id>/create_project", methods=["GET", "POST"])
@@ -93,7 +93,7 @@ def create_project(portfolio_id):
     flash("New project was created successfully.")
     return redirect(url_for("main.portfolio_detail", portfolio_id=portfolio_id))
 
-  return render_template("create_project.html", form=form)
+  return render_template("main/create_project.html", form=form)
 
 
 @main.route("/project/<int:project_id>", methods=["GET"])
@@ -126,5 +126,5 @@ def edit_projects(portfolio_id):
     flash("All project updated successfully.")
     return redirect(url_for("main.portfolio_detail", portfolio_id=portfolio_id))
   
-  return render_template("edit_project.html", projects=projects, portfolio=portfolio)
+  return render_template("main/edit_project.html", projects=projects, portfolio=portfolio)
 
