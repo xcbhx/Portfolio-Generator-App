@@ -2,16 +2,15 @@
 
 {% block content %}
 
-<h1>Account Log In</h1>
+<h1 class="text-3xl font-bold text-center mb-6">Account Log In</h1>
 
-<form action="{{ url_for('auth.login') }}" method="POST">
+<form action="{{ url_for('auth.login') }}" method="POST" class="max-w-sm mx-auto">
   {{ form.hidden_tag() }}
   <fieldset>
-    <legend>Login</legend>
-    
-    <div class="form-field">
-      {{ form.username.label }}
-      {{ form.username }}
+      
+    <div class="mb-5">
+      {{ form.username.label(class="block mb-2 text-sm font-medium text-gray-900 dark:text-white") }}
+      {{ form.username(class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500") }}
       <ul>
       {% for error in form.username.errors %}
         <li class="error">{{ error }}</li>
@@ -19,9 +18,9 @@
       </ul>
     </div>
 
-    <div class="form-field">
-      {{ form.password.label }}
-      {{ form.password }}
+    <div class="mb-5">
+      {{ form.password.label(class="block mb-2 text-sm font-medium text-gray-900 dark:text-white") }}
+      {{ form.password(class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500") }}
       <ul>
       {% for error in form.password.errors %}
         <li class="error">{{ error }}</li>
@@ -29,12 +28,12 @@
       </ul>
     </div>
 
-    <div class="form-field">
-      {{ form.submit }}
+    <div class="text-center">
+      {{ form.submit(class="text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center") }}
     </div>
   </fieldset>
 </form>
-
-<p>Don't have an account? <a href="{{ url_for('auth.signup') }}">Sign up here</a>.</p>
+<br />
+<p class="text-center">Don't have an account? <a href="{{ url_for('auth.signup') }}" class="font-medium text-blue-600 hover:underline dark:text-blue-500">Sign up here</a></p>
 
 {% endblock %}

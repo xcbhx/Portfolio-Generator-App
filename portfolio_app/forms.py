@@ -52,7 +52,7 @@ class ProjectForm(FlaskForm):
   submit = SubmitField("Add Project")
 
 class SignUpForm(FlaskForm):
-  username = StringField('User Name',
+  username = StringField('Username',
       validators=[DataRequired(), Length(min=3, max=50)])
   email = StringField("Email",
     validators=[DataRequired(),
@@ -68,7 +68,7 @@ class SignUpForm(FlaskForm):
       raise ValidationError('Incorrect username or password.')
 
 class LoginForm(FlaskForm):
-  username = StringField('User Name',
+  username = StringField('Username',
     validators=[DataRequired(), Length(min=3, max=50)])
   password = PasswordField('Password', validators=[DataRequired()])
   submit = SubmitField('Log In')
