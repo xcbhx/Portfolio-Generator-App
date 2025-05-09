@@ -35,7 +35,13 @@ def login():
       login_user(user, remember=True)
       flash("Logged in successfully.")
       next_page = request.args.get("next")
-      return redirect(next_page if next_page else url_for("main.create"))
+
+      # Redirect to user's porfolio if it exists
+      if user.created_portfolios:
+        return redirect(url_for("main.portfolio_detail", portfolio_id=user.created_portfolios[0].id))
+      
+      # otherwise, redirect to create a new portfolio
+      return redirect(next_page or url_for("main.create"))
     else:
       flash("Invalid username or password.")
   return render_template("auth/login.html", form=form)
