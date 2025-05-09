@@ -1,8 +1,7 @@
-import os
 from flask import Blueprint, request, render_template, redirect, url_for, flash
-from datetime import datetime
 from portfolio_app.models import User, Portfolio, Project
 from portfolio_app.forms import PortfolioForm, ProjectForm
+from flask_login import login_required, current_user
 
 from portfolio_app import db
 
@@ -15,6 +14,7 @@ def homepage():
 
 
 @main.route("/create_portfolio", methods=["GET", "POST"])
+@login_required
 def create():
   """ Create a new porfolio."""
   form = PortfolioForm()
@@ -26,7 +26,8 @@ def create():
 
     new_portfolio = Portfolio(
       bio=form.bio.data,
-      skills=skills_combined
+      skills=skills_combined,
+      user=current_user
     )
     
     db.session.add(new_portfolio)
@@ -38,12 +39,14 @@ def create():
     return render_template("main/create_portfolio.html", form=form)
 
 @main.route("/portfolio/<int:portfolio_id>", methods=["GET"])
+@login_required
 def portfolio_detail(portfolio_id):
   """Display a single portfolio's details."""
   portfolio = Portfolio.query.get_or_404(portfolio_id)
   return render_template("main/portfolio_detail.html", portfolio=portfolio)
 
 @main.route("/portfolio/<int:portfolio_id>/edit", methods=["GET", "POST"])
+@login_required
 def edit_portfolio(portfolio_id):
   """Display form to edit portfolio."""
   portfolio = Portfolio.query.get_or_404(portfolio_id)
@@ -66,6 +69,7 @@ def edit_portfolio(portfolio_id):
 
 
 @main.route("/portfolio/<int:portfolio_id>/create_project", methods=["GET", "POST"])
+@login_required
 def create_project(portfolio_id):
   """Displaying form to add one or more projects to portfolio."""
   form = ProjectForm()
@@ -97,6 +101,7 @@ def create_project(portfolio_id):
 
 
 @main.route("/project/<int:project_id>", methods=["GET"])
+@login_required
 def project_detail(project_id):
   """Display projects."""
   project = Project.query.get_or_404(project_id)
@@ -104,6 +109,7 @@ def project_detail(project_id):
 
 
 @main.route("/portfolio/<int:portfolio_id>/edit_projects", methods=["GET", "POST"])
+@login_required
 def edit_projects(portfolio_id):
   """Display form to edit projects."""
   portfolio = Portfolio.query.get_or_404(portfolio_id)

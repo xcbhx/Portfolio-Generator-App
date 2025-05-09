@@ -35,7 +35,7 @@ def login():
       login_user(user, remember=True)
       flash("Logged in successfully.")
       next_page = request.args.get("next")
-      return redirect(next_page if next_page else url_for("main.homepage"))
+      return redirect(next_page if next_page else url_for("main.create"))
     else:
       flash("Invalid username or password.")
   return render_template("auth/login.html", form=form)
