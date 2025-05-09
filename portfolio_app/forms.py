@@ -4,26 +4,20 @@ from wtforms.validators import DataRequired, Length, URL, Email, ValidationError
 from portfolio_app.models import Portfolio, Project, User
 from portfolio_app.extensions import bcrypt
 
-class UserForm(FlaskForm):
-  """Form for adding User."""
-  username = StringField("Username",
-    validators=[
-      DataRequired(),
-      Length(min=3, max=100, message="Your username must be between 3 and 100 characters.")
-    ])
-  password = PasswordField("Password",
-    validators=[
-      DataRequired(),
-      Length(min=3, max=80, message="Your password must be between 3 and 80 characters.")
-    ])
-  email = StringField("Email",
-    validators=[
-      DataRequired(),
-      Email(message="Please enter a valid URL."),
-      Length(min=5, max=80, message="Your email must be between 5 and 80 characters.")
-    ])
-  submit = SubmitField("Create Account")
-
+# class UserForm(FlaskForm):
+#   """Form for updating User Profile."""
+#   username = StringField("Username",
+#     validators=[
+#       DataRequired(),
+#       Length(min=3, max=100, message="Your username must be between 3 and 100 characters.")
+#     ])
+#   email = StringField("Email",
+#     validators=[
+#       DataRequired(),
+#       Email(message="Please enter a valid URL."),
+#       Length(min=5, max=80, message="Your email must be between 5 and 80 characters.")
+#     ])
+#   submit = SubmitField("Update Profile")
 
 class PortfolioForm(FlaskForm):
   bio = StringField("Bio", 
@@ -53,7 +47,7 @@ class ProjectForm(FlaskForm):
   github_link = StringField("Github Link", 
     validators=[
       DataRequired(),
-      URL(message="Please enter a valid URL.")
+      URL(message="Please enter a valid email address.")
     ])
   submit = SubmitField("Add Project")
 
@@ -64,23 +58,23 @@ class SignUpForm(FlaskForm):
   submit = SubmitField('Sign Up')
 
   def validate_username(self, username):
-      user = User.query.filter_by(username=username.data).first()
-      if user:
-          raise ValidationError('Please try again.')
+    user = User.query.filter_by(username=username.data).first()
+    if user:
+      raise ValidationError('Incorrect username or password.')
 
 class LoginForm(FlaskForm):
   username = StringField('User Name',
-      validators=[DataRequired(), Length(min=3, max=50)])
+    validators=[DataRequired(), Length(min=3, max=50)])
   password = PasswordField('Password', validators=[DataRequired()])
   submit = SubmitField('Log In')
 
   def validate_username(self, username):
-      user = User.query.filter_by(username=username.data).first()
-      if not user:
-          raise ValidationError('Please try again.')
+    user = User.query.filter_by(username=username.data).first()
+    if not user:
+      raise ValidationError('Incorrect username or password.')
 
   def validate_password(self, password):
-      user = User.query.filter_by(username=self.username.data).first()
-      if user and not bcrypt.check_password_hash(
-              user.password, password.data):
-          raise ValidationError('Please try again.')
+    user = User.query.filter_by(username=self.username.data).first()
+    if user and not bcrypt.check_password_hash(
+        user.password, password.data):
+      raise ValidationError('Incorrect username or password.')
