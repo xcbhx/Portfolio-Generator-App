@@ -54,6 +54,11 @@ class ProjectForm(FlaskForm):
 class SignUpForm(FlaskForm):
   username = StringField('User Name',
       validators=[DataRequired(), Length(min=3, max=50)])
+  email = StringField("Email",
+    validators=[DataRequired(),
+      Email(message="Please enter a valid email address."),
+      Length(min=5, max=80, message="Your email must be between 5 and 80 characters.")]
+  )
   password = PasswordField('Password', validators=[DataRequired()])
   submit = SubmitField('Sign Up')
 
