@@ -76,7 +76,16 @@
     </div>
   </nav>
 
-  <main>
+  <main class="p-4">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="mb-4 text-sm text-red-600 dark:text-red-400">
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
     {% block content %}
     {% endblock %}
   </main>
