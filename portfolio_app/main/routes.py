@@ -1,6 +1,6 @@
 from flask import Blueprint, request, render_template, redirect, url_for, flash
 from portfolio_app.models import User, Portfolio, Project
-from portfolio_app.forms import PortfolioForm, ProjectForm
+from portfolio_app.main.forms import PortfolioForm, ProjectForm
 from flask_login import login_required, current_user
 
 from portfolio_app import db

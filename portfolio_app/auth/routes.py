@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, redirect, request, url_for, flash
 from flask_login import login_user, login_required, logout_user
 
 from portfolio_app.models import User
-from portfolio_app.forms import SignUpForm, LoginForm
+from portfolio_app.auth.forms import SignUpForm, LoginForm
 
 from portfolio_app.extensions import db, bcrypt
 
